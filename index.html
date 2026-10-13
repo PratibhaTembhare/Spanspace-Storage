@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CloudAI Storage — AI-Enabled Image Compression and Decompression</title>
+<link rel="stylesheet" href="styles.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+    <div class="logo-icon">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+  </svg>
+</div>
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">Spanspace</span>
+      <span class="logo-badge">Storage</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="#" class="nav-item active" data-page="dashboard">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a href="#" class="nav-item" data-page="upload">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Upload Files
+    </a>
+    <a href="#" class="nav-item" data-page="gallery">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      My Gallery
+    </a>
+    <a href="#" class="nav-item" data-page="analytics">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      AI Analytics
+    </a>
+    <div class="nav-section-label" style="margin-top:20px;">Research</div>
+    <a href="#" class="nav-item" data-page="pipeline">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      AI Pipeline
+    </a>
+    <a href="#" class="nav-item" data-page="metrics">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Metrics Lab
+    </a>
+    <a href="#" class="nav-item" data-page="costs">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Cost Analysis
+    </a>
+  </nav>
+
+  <div class="sidebar-storage">
+    <div class="storage-header">
+      <span>Storage Used</span>
+      <span class="storage-percent" id="storagePercent">34%</span>
+    </div>
+    <div class="storage-bar">
+      <div class="storage-fill" id="storageFill" style="width:34%"></div>
+    </div>
+    <div class="storage-details">
+      <span id="storageUsed">8.5 GB</span>
+      <span>of <strong>25 GB</strong> (50 GB effective)</span>
+    </div>
+    <div class="ai-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/></svg>
+      AI Compression Active
+    </div>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">P</div>
+    <div class="user-info">
+      <span class="user-name">Pratibha</span>
+      <span class="user-plan">Pro Plan</span>
+    </div>
+    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+      <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════ -->
+<main class="main-content">
+
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="page-title" id="pageTitle">Dashboard Overview</div>
+    </div>
+    <div class="top-bar-right">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search files, analytics..." />
+      </div>
+      <button class="icon-btn notification-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot"></span>
+      </button>
+      <button class="btn-primary" onclick="showPage('upload')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Upload Image
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══ PAGE: DASHBOARD ═══ -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-scroll">
+
+      <!-- Stat Cards -->
+      <div class="stats-grid">
+        <div class="stat-card highlight-card">
+          <div class="stat-card-header">
+            <span>Total Storage Saved</span>
+            <div class="stat-icon green">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+          </div>
+          <div class="stat-value">14.7 GB</div>
+          <div class="stat-sub"><span class="badge green">+58% efficiency</span><span>via AI compression</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span>Images Processed</span>
+            <div class="stat-icon blue">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+          </div>
+          <div class="stat-value">2,847</div>
+          <div class="stat-sub"><span class="badge blue">+124 this week</span><span>autoencoded</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span>Avg. PSNR Quality</span>
+            <div class="stat-icon purple">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+          </div>
+          <div class="stat-value">42.3 dB</div>
+          <div class="stat-sub"><span class="badge purple">SSIM: 0.954</span><span>above threshold</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span>Monthly Cost Saved</span>
+            <div class="stat-icon amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+          </div>
+          <div class="stat-value">$31.20</div>
+          <div class="stat-sub"><span class="badge amber">vs. $50/mo</span><span>standard plan</span></div>
+        </div>
+      </div>
+
+      <!-- Storage Model + Bar Chart -->
+      <div class="row-2col">
+        <div class="card">
+          <div class="card-header">
+            <h3>AI Storage Expansion Model</h3>
+            <span class="badge blue">Live</span>
+          </div>
+          <div class="storage-model">
+            <div class="storage-model-row">
+              <div class="storage-label">Physical Quota</div>
+              <div class="storage-track">
+                <div class="storage-segment physical" style="width:100%"><span>25 GB Physical</span></div>
+              </div>
+            </div>
+            <div class="storage-model-row">
+              <div class="storage-label">Effective Capacity</div>
+              <div class="storage-track">
+                <div class="storage-segment effective" style="width:100%"><span>50 GB Effective (2× via AI Compression)</span></div>
+              </div>
+            </div>
+            <div class="storage-model-row">
+              <div class="storage-label">Currently Used</div>
+              <div class="storage-track">
+                <div class="storage-segment used" style="width:34%"><span>8.5 GB</span></div>
+                <div class="storage-segment free" style="width:66%"><span>41.5 GB Free</span></div>
+              </div>
+            </div>
+            <div class="compression-legend">
+              <div class="legend-item"><span class="dot blue"></span> Sharp/WebP Engine (low-texture)</div>
+              <div class="legend-item"><span class="dot purple"></span> Neural Autoencoder (high-texture)</div>
+              <div class="legend-item"><span class="dot green"></span> Quality Gate ≥ 40dB PSNR</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Compression Ratio by Category</h3>
+            <button class="btn-ghost btn-sm">Export</button>
+          </div>
+          <div class="bar-chart" id="compressionChart"></div>
+        </div>
+      </div>
+
+      <!-- Recent Files + Pipeline Health -->
+      <div class="row-2col">
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent Uploads</h3>
+            <a href="#" onclick="showPage('gallery')" class="link-sm">View All →</a>
+          </div>
+          <div class="file-list">
+            <div class="file-item">
+              <div class="file-thumb landscape"></div>
+              <div class="file-info">
+                <div class="file-name">vacation_beach.jpg</div>
+                <div class="file-meta"><span class="badge blue">WebP</span> 4.2MB → 1.8MB (57%)</div>
+              </div>
+              <div class="file-metrics">
+                <div class="metric-pill">PSNR: 41.8 dB</div>
+                <div class="metric-pill">SSIM: 0.952</div>
+              </div>
+            </div>
+            <div class="file-item">
+              <div class="file-thumb portrait"></div>
+              <div class="file-info">
+                <div class="file-name">family_photo.png</div>
+                <div class="file-meta"><span class="badge purple">Neural</span> 7.1MB → 3.0MB (58%)</div>
+              </div>
+              <div class="file-metrics">
+                <div class="metric-pill">PSNR: 43.2 dB</div>
+                <div class="metric-pill">SSIM: 0.961</div>
+              </div>
+            </div>
+            <div class="file-item">
+              <div class="file-thumb nature"></div>
+              <div class="file-info">
+                <div class="file-name">mountain_view.jpg</div>
+                <div class="file-meta"><span class="badge blue">WebP</span> 5.6MB → 2.3MB (59%)</div>
+              </div>
+              <div class="file-metrics">
+                <div class="metric-pill">PSNR: 40.5 dB</div>
+                <div class="metric-pill">SSIM: 0.947</div>
+              </div>
+            </div>
+            <div class="file-item">
+              <div class="file-thumb city"></div>
+              <div class="file-info">
+                <div class="file-name">city_night.jpg</div>
+                <div class="file-meta"><span class="badge purple">Neural</span> 8.9MB → 3.7MB (58%)</div>
+              </div>
+              <div class="file-metrics">
+                <div class="metric-pill">PSNR: 42.7 dB</div>
+                <div class="metric-pill">SSIM: 0.958</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Pipeline Health</h3>
+            <span class="badge green">All Systems Operational</span>
+          </div>
+          <div class="pipeline-health">
+            <div class="health-item">
+              <div class="health-dot green pulse-green"></div>
+              <div class="health-info">
+                <span class="health-name">Adaptive Compression Engine</span>
+                <span class="health-stat">Avg. 1.2s/image · 99.8% uptime</span>
+              </div>
+              <div class="health-bar-wrap"><div class="health-bar" style="--pct:99.8%;--clr:#22c55e"></div></div>
+            </div>
+            <div class="health-item">
+              <div class="health-dot green pulse-green"></div>
+              <div class="health-info">
+                <span class="health-name">Quality Validation Gate</span>
+                <span class="health-stat">PSNR 42.3 dB avg · pass rate 97.4%</span>
+              </div>
+              <div class="health-bar-wrap"><div class="health-bar" style="--pct:97.4%;--clr:#6366f1"></div></div>
+            </div>
+            <div class="health-item">
+              <div class="health-dot green pulse-green"></div>
+              <div class="health-info">
+                <span class="health-name">Tus Chunked Upload Protocol</span>
+                <span class="health-stat">512KB chunks · resumable · 0 failures</span>
+              </div>
+              <div class="health-bar-wrap"><div class="health-bar" style="--pct:100%;--clr:#8b5cf6"></div></div>
+            </div>
+            <div class="health-item">
+              <div class="health-dot green pulse-green"></div>
+              <div class="health-info">
+                <span class="health-name">AWS S3 + MongoDB Atlas Sync</span>
+                <span class="health-stat">us-east-1 · 12ms latency avg</span>
+              </div>
+              <div class="health-bar-wrap"><div class="health-bar" style="--pct:98.9%;--clr:#f59e0b"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Architecture Banner -->
+      <div class="card arch-card">
+        <div class="card-header">
+          <h3>System Architecture — Research Implementation</h3>
+          <span class="badge purple">v2.4.1 Production</span>
+        </div>
+        <div class="arch-flow">
+          <div class="arch-node"><div class="arch-icon">📸</div><div class="arch-name">Image Input</div><div class="arch-sub">JPEG/PNG/WEBP</div></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node"><div class="arch-icon">🧠</div><div class="arch-name">Texture Analyzer</div><div class="arch-sub">Sobel / Laplacian</div></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node"><div class="arch-icon">⚙️</div><div class="arch-name">Dual Engine</div><div class="arch-sub">Sharp + Autoencoder</div></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node"><div class="arch-icon">✅</div><div class="arch-name">Quality Gate</div><div class="arch-sub">PSNR ≥ 40dB</div></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node"><div class="arch-icon">📦</div><div class="arch-name">Tus Upload</div><div class="arch-sub">Chunked + Resumable</div></div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-node"><div class="arch-icon">☁️</div><div class="arch-name">Cloud Sync</div><div class="arch-sub">S3 + Firebase + MongoDB</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: UPLOAD ═══ -->
+  <div class="page" id="page-upload">
+    <div class="page-scroll">
+      <div class="upload-container">
+        <div class="upload-header">
+          <h2>Upload & Process Images</h2>
+          <p>Drop your photos below. The AI pipeline will automatically compress, validate quality, and sync to cloud.</p>
+        </div>
+
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-inner">
+            <div class="drop-icon">
+              <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <h3>Drag & Drop your images here</h3>
+            <p>Supports JPEG, PNG, WebP, HEIC — up to 50MB per file</p>
+            <div class="drop-divider"><span>or</span></div>
+            <label class="btn-primary" for="fileInput" style="cursor:pointer">Browse Files</label>
+            <input type="file" id="fileInput" accept="image/*" multiple hidden />
+          </div>
+        </div>
+
+        <div class="upload-features">
+          <div class="feature-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15"/></svg>
+            AI Compression
+          </div>
+          <div class="feature-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            PSNR/SSIM Quality Gate
+          </div>
+          <div class="feature-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/></svg>
+            Resumable Tus Upload
+          </div>
+          <div class="feature-chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+            AWS S3 Cloud Sync
+          </div>
+        </div>
+
+        <div class="queue-section" id="queueSection" style="display:none">
+          <h3>Processing Queue</h3>
+          <div id="queueList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: GALLERY ═══ -->
+  <div class="page" id="page-gallery">
+    <div class="page-scroll">
+      <div class="gallery-toolbar">
+        <div class="gallery-filters">
+          <button class="filter-btn active" data-filter="all">All Files</button>
+          <button class="filter-btn" data-filter="webp">WebP Engine</button>
+          <button class="filter-btn" data-filter="neural">Neural Network</button>
+        </div>
+        <div class="gallery-sort">
+          <select class="select-input">
+            <option>Latest First</option>
+            <option>Highest PSNR</option>
+            <option>Most Compressed</option>
+          </select>
+        </div>
+      </div>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: ANALYTICS ═══ -->
+  <div class="page" id="page-analytics">
+    <div class="page-scroll">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-header"><span>Total Input Size</span><div class="stat-icon blue">📥</div></div>
+          <div class="stat-value">34.2 GB</div>
+          <div class="stat-sub"><span class="badge blue">2,847 images</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header"><span>After Compression</span><div class="stat-icon green">📦</div></div>
+          <div class="stat-value">14.8 GB</div>
+          <div class="stat-sub"><span class="badge green">56.7% reduction</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header"><span>Quality Gate Pass</span><div class="stat-icon purple">✅</div></div>
+          <div class="stat-value">97.4%</div>
+          <div class="stat-sub"><span class="badge purple">2,773 passed</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-header"><span>Re-encode Events</span><div class="stat-icon amber">🔄</div></div>
+          <div class="stat-value">74</div>
+          <div class="stat-sub"><span class="badge amber">Auto-recovered</span></div>
+        </div>
+      </div>
+
+      <div class="row-2col">
+        <div class="card">
+          <div class="card-header"><h3>Quality Distribution (PSNR)</h3></div>
+          <div class="psnr-distribution" id="psnrChart"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Engine Routing Breakdown</h3></div>
+          <div class="donut-container" id="donutChart">
+            <div class="donut-wrap">
+              <svg viewBox="0 0 100 100" class="donut-svg">
+                <circle cx="50" cy="50" r="35" fill="none" stroke="var(--border)" stroke-width="12"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#6366f1" stroke-width="12"
+                  stroke-dasharray="110 110" stroke-dashoffset="0" stroke-linecap="round"
+                  transform="rotate(-90 50 50)"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#8b5cf6" stroke-width="12"
+                  stroke-dasharray="70 150" stroke-dashoffset="-110" stroke-linecap="round"
+                  transform="rotate(-90 50 50)"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#f59e0b" stroke-width="12"
+                  stroke-dasharray="40 180" stroke-dashoffset="-180" stroke-linecap="round"
+                  transform="rotate(-90 50 50)"/>
+              </svg>
+              <div class="donut-center">
+                <div class="donut-total">2847</div>
+                <div class="donut-label">Total</div>
+              </div>
+            </div>
+            <div class="donut-legend">
+              <div class="donut-item"><span class="dot" style="background:#6366f1"></span><span>Sharp/WebP — 50% (1,424)</span></div>
+              <div class="donut-item"><span class="dot" style="background:#8b5cf6"></span><span>Neural Autoencoder — 32% (910)</span></div>
+              <div class="donut-item"><span class="dot" style="background:#f59e0b"></span><span>Hybrid Mode — 18% (513)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Before / After -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Before / After AI Restoration — Sample Comparison</h3>
+          <span class="badge green">Research Proof</span>
+        </div>
+        <div class="comparison-container">
+          <div class="comparison-image">
+            <div class="comp-img-wrap original-img">
+              <div class="comp-label">Original</div>
+              <div class="comp-size">4.2 MB · JPEG</div>
+            </div>
+            <div class="comp-arrow">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              <span>AI Pipeline</span>
+            </div>
+            <div class="comp-img-wrap restored-img">
+              <div class="comp-label">AI Restored</div>
+              <div class="comp-size">1.8 MB · WebP</div>
+            </div>
+          </div>
+          <div class="comparison-metrics">
+            <div class="comp-metric-card">
+              <div class="comp-metric-label">File Size Reduction</div>
+              <div class="comp-metric-value green">57.1%</div>
+              <div class="comp-metric-sub">4.2 MB → 1.8 MB</div>
+            </div>
+            <div class="comp-metric-card">
+              <div class="comp-metric-label">PSNR Score</div>
+              <div class="comp-metric-value blue">41.8 dB</div>
+              <div class="comp-metric-sub">Threshold: ≥ 40 dB ✓</div>
+            </div>
+            <div class="comp-metric-card">
+              <div class="comp-metric-label">SSIM Index</div>
+              <div class="comp-metric-value purple">0.952</div>
+              <div class="comp-metric-sub">Target: ≈ 0.95 ✓</div>
+            </div>
+            <div class="comp-metric-card">
+              <div class="comp-metric-label">Engine Used</div>
+              <div class="comp-metric-value amber">Sharp/WebP</div>
+              <div class="comp-metric-sub">Low-texture routing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: AI PIPELINE ═══ -->
+  <div class="page" id="page-pipeline">
+    <div class="page-scroll">
+      <div class="pipeline-page-header">
+        <h2>AI Processing Pipeline — Technical Deep Dive</h2>
+        <p>Real-time visualization of the 4-stage AI compression and cloud sync workflow</p>
+        <button class="btn-primary" onclick="runDemoPipeline()" style="margin-top:12px">▶ Run Demo Pipeline</button>
+      </div>
+      <div class="pipeline-stages">
+
+        <div class="pipeline-stage" id="stage-1">
+          <div class="stage-number">01</div>
+          <div class="stage-content">
+            <div class="stage-header">
+              <div class="stage-icon">⚙️</div>
+              <div>
+                <h3>Adaptive Compression Engine</h3>
+                <p>Sharp/WebP codec & Neural Autoencoder routing based on texture complexity</p>
+              </div>
+              <div class="stage-status idle" id="stage-1-status">IDLE</div>
+            </div>
+            <div class="stage-log" id="stage-1-log"><div class="log-placeholder">Waiting for image input...</div></div>
+            <div class="stage-params">
+              <div class="param-tag">Sharp v0.32 · WebP Quality 82</div>
+              <div class="param-tag">Autoencoder: 256D latent space</div>
+              <div class="param-tag">Texture threshold: σ > 12.5</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pipeline-stage" id="stage-2">
+          <div class="stage-number">02</div>
+          <div class="stage-content">
+            <div class="stage-header">
+              <div class="stage-icon">🔬</div>
+              <div>
+                <h3>Quality Validation Gate</h3>
+                <p>Live PSNR & SSIM computation using simulated OpenCV/scikit-image metrics</p>
+              </div>
+              <div class="stage-status idle" id="stage-2-status">IDLE</div>
+            </div>
+            <div class="stage-log" id="stage-2-log"><div class="log-placeholder">Waiting for compression output...</div></div>
+            <div class="stage-params">
+              <div class="param-tag">PSNR threshold: ≥ 40 dB</div>
+              <div class="param-tag">SSIM target: ≈ 0.95</div>
+              <div class="param-tag">Max re-encode: 3 attempts</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pipeline-stage" id="stage-3">
+          <div class="stage-number">03</div>
+          <div class="stage-content">
+            <div class="stage-header">
+              <div class="stage-icon">📤</div>
+              <div>
+                <h3>Resumable Chunked Upload (Tus Protocol)</h3>
+                <p>Fault-tolerant upload with 512KB chunks and resume capability</p>
+              </div>
+              <div class="stage-status idle" id="stage-3-status">IDLE</div>
+            </div>
+            <div class="stage-log" id="stage-3-log"><div class="log-placeholder">Waiting for quality validation...</div></div>
+            <div class="stage-params">
+              <div class="param-tag">Chunk size: 524,288 bytes</div>
+              <div class="param-tag">Protocol: Tus v1.0</div>
+              <div class="param-tag">Retry: exponential backoff</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pipeline-stage" id="stage-4">
+          <div class="stage-number">04</div>
+          <div class="stage-content">
+            <div class="stage-header">
+              <div class="stage-icon">☁️</div>
+              <div>
+                <h3>Cloud Sync — AWS S3 + Firebase + MongoDB Atlas</h3>
+                <p>Multi-service sync with metadata indexing and auth token generation</p>
+              </div>
+              <div class="stage-status idle" id="stage-4-status">IDLE</div>
+            </div>
+            <div class="stage-log" id="stage-4-log"><div class="log-placeholder">Waiting for upload completion...</div></div>
+            <div class="stage-params">
+              <div class="param-tag">S3: cloudai-research-us-east-1</div>
+              <div class="param-tag">Firebase: auth + Firestore</div>
+              <div class="param-tag">MongoDB: Atlas cluster</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: METRICS LAB ═══ -->
+  <div class="page" id="page-metrics">
+    <div class="page-scroll">
+      <div class="card">
+        <div class="card-header"><h3>PSNR vs SSIM Scatter Analysis</h3><span class="badge blue">2,847 samples</span></div>
+        <div class="scatter-wrap" id="scatterPlot"></div>
+      </div>
+      <div class="row-2col">
+        <div class="card">
+          <div class="card-header"><h3>Compression Time Distribution</h3></div>
+          <div class="time-chart" id="timeChart"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Quality Gate — Re-encode Events Log</h3></div>
+          <div class="reencode-log" style="overflow-x:auto">
+            <table class="data-table">
+              <thead>
+                <tr><th>Image</th><th>Attempt</th><th>PSNR</th><th>SSIM</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>img_0214.jpg</td><td>1st</td><td>38.2 dB</td><td>0.921</td><td><span class="badge amber">Re-encode</span></td></tr>
+                <tr><td>img_0214.jpg</td><td>2nd</td><td>41.3 dB</td><td>0.949</td><td><span class="badge green">Pass</span></td></tr>
+                <tr><td>img_0891.png</td><td>1st</td><td>37.9 dB</td><td>0.918</td><td><span class="badge amber">Re-encode</span></td></tr>
+                <tr><td>img_0891.png</td><td>2nd</td><td>39.1 dB</td><td>0.931</td><td><span class="badge amber">Re-encode</span></td></tr>
+                <tr><td>img_0891.png</td><td>3rd</td><td>42.6 dB</td><td>0.957</td><td><span class="badge green">Pass</span></td></tr>
+                <tr><td>img_1203.jpg</td><td>1st</td><td>38.8 dB</td><td>0.928</td><td><span class="badge amber">Re-encode</span></td></tr>
+                <tr><td>img_1203.jpg</td><td>2nd</td><td>40.4 dB</td><td>0.946</td><td><span class="badge green">Pass</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: COST ANALYSIS ═══ -->
+  <div class="page" id="page-costs">
+    <div class="page-scroll">
+      <div class="cost-hero">
+        <div class="cost-hero-left">
+          <h2>Cost Savings Analysis</h2>
+          <p>Comparing AI-compressed cloud storage vs. standard pricing models</p>
+          <div class="cost-comparison">
+            <div class="cost-plan standard">
+              <div class="plan-label">Standard Plan</div>
+              <div class="plan-price">$50<span>/mo</span></div>
+              <div class="plan-storage">100 GB Storage</div>
+              <ul class="plan-features">
+                <li>No AI compression</li>
+                <li>Standard JPEG storage</li>
+                <li>100 GB raw capacity</li>
+                <li>Basic upload</li>
+              </ul>
+            </div>
+            <div class="cost-vs">VS</div>
+            <div class="cost-plan ai-plan">
+              <div class="plan-badge">AI Powered</div>
+              <div class="plan-label">CloudAI Plan</div>
+              <div class="plan-price ai-price">$18.80<span>/mo</span></div>
+              <div class="plan-storage">25 GB Physical = 50 GB Effective</div>
+              <ul class="plan-features">
+                <li>✓ AI Compression (avg. 57%)</li>
+                <li>✓ 2× effective capacity</li>
+                <li>✓ PSNR quality guarantee</li>
+                <li>✓ Resumable uploads</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="cost-hero-right">
+          <div class="savings-ring">
+            <svg viewBox="0 0 200 200" class="savings-svg">
+              <circle cx="100" cy="100" r="75" fill="none" stroke="var(--border)" stroke-width="18"/>
+              <circle cx="100" cy="100" r="75" fill="none" stroke="#22c55e" stroke-width="18"
+                stroke-dasharray="295 472" stroke-dashoffset="0"
+                stroke-linecap="round" transform="rotate(-90 100 100)" class="savings-arc"/>
+            </svg>
+            <div class="savings-center">
+              <div class="savings-pct">62.4%</div>
+              <div class="savings-lbl">Cost Savings</div>
+            </div>
+          </div>
+          <div class="savings-details">
+            <div class="savings-row"><span>Standard (100 GB)</span><span class="price-std">$50.00/mo</span></div>
+            <div class="savings-row"><span>CloudAI (25 GB phys.)</span><span class="price-ai">$18.80/mo</span></div>
+            <div class="savings-row total-row"><span>Monthly Savings</span><span class="price-save">$31.20/mo</span></div>
+            <div class="savings-row total-row"><span>Annual Savings</span><span class="price-save">$374.40/yr</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-2col" style="margin-top:24px">
+        <div class="card">
+          <div class="card-header"><h3>Storage Cost Projection — 12 Months</h3></div>
+          <div class="cost-chart" id="costChart"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Monthly Cost Breakdown</h3></div>
+          <div class="cost-breakdown">
+            <div class="breakdown-item">
+              <div class="breakdown-label">AWS S3 Storage</div>
+              <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:60%;background:#6366f1"></div></div>
+              <div class="breakdown-val">$11.28/mo</div>
+            </div>
+            <div class="breakdown-item">
+              <div class="breakdown-label">AI Compute (Lambda)</div>
+              <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:30%;background:#8b5cf6"></div></div>
+              <div class="breakdown-val">$5.60/mo</div>
+            </div>
+            <div class="breakdown-item">
+              <div class="breakdown-label">Firebase Auth</div>
+              <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:8%;background:#f59e0b"></div></div>
+              <div class="breakdown-val">$1.20/mo</div>
+            </div>
+            <div class="breakdown-item">
+              <div class="breakdown-label">MongoDB Atlas</div>
+              <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:4%;background:#22c55e"></div></div>
+              <div class="breakdown-val">$0.72/mo</div>
+            </div>
+            <div class="breakdown-total">Total: <strong>$18.80/mo</strong> vs $50.00 standard</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════════════════
+     AI PROCESSING MODAL
+════════════════════════════════════════════ -->
+<div class="modal-overlay" id="processingModal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="modal-spinner" id="modalSpinner"></div>
+        <h3>Processing: <span id="modalFilename">image.jpg</span></h3>
+      </div>
+      <div class="modal-meta" id="modalMeta">Initializing AI pipeline...</div>
+    </div>
+
+    <!-- Stage Indicators -->
+    <div class="modal-stages">
+      <div class="modal-stage">
+        <div class="ms-dot" id="ms-dot-1">1</div>
+        <span>Compression</span>
+      </div>
+      <div class="ms-line" id="ms-line-1"></div>
+      <div class="modal-stage">
+        <div class="ms-dot" id="ms-dot-2">2</div>
+        <span>Quality Gate</span>
+      </div>
+      <div class="ms-line" id="ms-line-2"></div>
+      <div class="modal-stage">
+        <div class="ms-dot" id="ms-dot-3">3</div>
+        <span>Tus Upload</span>
+      </div>
+      <div class="ms-line" id="ms-line-3"></div>
+      <div class="modal-stage">
+        <div class="ms-dot" id="ms-dot-4">4</div>
+        <span>Cloud Sync</span>
+      </div>
+    </div>
+
+    <!-- Live Log Console -->
+    <div class="log-console">
+      <div class="log-console-header">
+        <span>● LIVE PROCESS LOG</span>
+        <span id="logTime">0.000s</span>
+      </div>
+      <div class="log-lines" id="logLines"></div>
+    </div>
+
+    <!-- Live Metrics -->
+    <div class="modal-metrics" id="modalMetrics" style="display:none">
+      <div class="modal-metric"><div class="mm-label">PSNR</div><div class="mm-value" id="mm-psnr">—</div></div>
+      <div class="modal-metric"><div class="mm-label">SSIM</div><div class="mm-value" id="mm-ssim">—</div></div>
+      <div class="modal-metric"><div class="mm-label">Reduction</div><div class="mm-value" id="mm-reduction">—</div></div>
+      <div class="modal-metric"><div class="mm-label">Engine</div><div class="mm-value" id="mm-engine">—</div></div>
+    </div>
+
+    <!-- Quality Gate Bars -->
+    <div class="quality-gate" id="qualityGate" style="display:none">
+      <div class="qg-header">
+        <span class="qg-title">Quality Gate Status</span>
+        <span class="qg-status" id="qgStatus">Checking...</span>
+      </div>
+      <div class="qg-bars">
+        <div class="qg-bar-wrap">
+          <label>PSNR (target ≥ 40 dB)</label>
+          <div class="qg-track"><div class="qg-fill psnr-fill" id="psnrFill" style="width:0%"></div></div>
+          <span id="psnrVal">0 dB</span>
+        </div>
+        <div class="qg-bar-wrap">
+          <label>SSIM (target ≈ 0.95)</label>
+          <div class="qg-track"><div class="qg-fill ssim-fill" id="ssimFill" style="width:0%"></div></div>
+          <span id="ssimVal">0.000</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tus Upload Progress -->
+    <div class="tus-progress" id="tusProgress" style="display:none">
+      <div class="tus-header">
+        <span>Tus Protocol Upload</span>
+        <span id="tusChunkInfo">Chunk 0/0</span>
+      </div>
+      <div class="tus-track"><div class="tus-fill" id="tusFill" style="width:0%"></div></div>
+      <div class="tus-meta" id="tusMeta">Initializing...</div>
+    </div>
+
+    <!-- Cloud IDs -->
+    <div class="cloud-ids" id="cloudIds" style="display:none">
+      <div class="cloud-id-row">
+        <span class="cloud-service aws">AWS S3</span>
+        <code id="s3Id">—</code>
+      </div>
+      <div class="cloud-id-row">
+        <span class="cloud-service firebase">Firebase</span>
+        <code id="fbToken">—</code>
+      </div>
+      <div class="cloud-id-row">
+        <span class="cloud-service mongo">MongoDB</span>
+        <code id="mongoId">—</code>
+      </div>
+    </div>
+
+    <div class="modal-footer" id="modalFooter" style="display:none">
+      <button class="btn-primary" onclick="closeModal()">✓ View Results →</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
